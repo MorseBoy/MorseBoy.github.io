@@ -8,7 +8,7 @@
 		body {
 			background-color: #22f09a;
 			overflow-x: hidden;
-			overflow-y: hidden;
+			overflow-y: auto;
 		}
 		#header {
 			text-align: center;
@@ -253,12 +253,62 @@
 				padding-top: 100%;
 			}
 		}
-		@media only screen and (max-width: 900px) {
-			body {
-				overflow-y: auto;
-				overflow-x: hidden;
-				background-color: #22f09a;
+		#opstm {
+			opacity: 0;
+			z-index: -3;
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			height: 60%;
+		}
+		#opstmOpen {
+			opacity: 1;
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			height: 60%;
+			animation: tmanum 3s;
+		}
+		@keyframes tmanum {
+			0% {
+				opacity: 0;
 			}
+			100% {
+				opacity: 1;
+			}
+		}
+		#input1 {
+			width: 80%;
+			margin-right: 10%;
+			margin-left: 10%;
+			background-color: #9fa8b7;
+			color: black;
+			border: none;
+			height: 10%;
+			border: 3px solid black;
+			transition: 1s;
+		}
+		#input1:hover {
+			border-bottom-left-radius: 30px;
+			border-top-right-radius: 30px;
+			background-color: #9fa4ad;
+		}
+		#tmbtn {
+			transition: 0.6s;
+			height: 10%;
+			width: 10%;
+			background-color: #7691c1;
+			color: black;
+			border: none;
+			margin-left: 45%;
+			margin-right: 45%;
+			margin-top: 3%;
+		}
+		#tmbtn:hover {
+			background-color: #839bc6;
+			color: black;
+		}
+		@media only screen and (max-width: 1200px) {
 			.panelpic {
 				border-radius: 50px;
 				width: 50%;
@@ -274,6 +324,37 @@
 				margin-left: 25%;
 				align-self: center;
 				animation: panelpics 18s;
+			}
+			#tmbtn {
+				transition: 0.6s;
+				height: 10%;
+				width: 30%;
+				background-color: #7691c1;
+				border: none;
+				color: black;
+				margin-left: 45%;
+				margin-right: 45%;
+				margin-top: 3%;
+			}
+			#tmbtn:hover {
+				background-color: #839bc6;
+				color: black;
+			}
+			#input1 {
+				width: 90%;
+				margin-right: 5%;
+				margin-left: 5%;
+				background-color: #9fa8b7;
+				color: black;
+				border: none;
+				height: 10%;
+				border: 3px solid black;
+				transition: 1s;
+			}
+			#input:hover {
+				border-bottom-left-radius: 30px;
+				border-top-right-radius: 30px;
+				background-color: #9fa4ad;
 			}
 		}
 		@media only screen and (max-width: 768px) {
@@ -391,9 +472,88 @@
 			#togBtn:hover {
 				opacity: 1;
 			}
+			#opstm {
+				opacity: 0;
+				z-index: -3;
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				height: 80%;
+			}
+			#opstmOpen {
+				opacity: 1;
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				height: 80%;
+				animation: tmanum 3s;
+			}
+			@keyframes tmanum {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
 		}
 	</style>
 	<script type="text/javascript">
+		var tmDir = {
+			'a':'.- ',
+			'b':'-... ',
+			'c':'---. ',
+			'd':'-.. ',
+			'e':'. ',
+			'f':'..-. ',
+			'g':'--. ',
+			'h':'.... ',
+			'i':'.. ',
+			'j':'.--- ',
+			'k':'-.- ',
+			'l':'.-..	',
+			'm':'---- ',
+			'n':'-. ',
+			'o':'--- ',
+			'p':'.--. ',
+			'q':'--.- ',
+			'r':'.-. ',
+			's':'... ',
+			't':'- ',
+			'u':'..- ',
+			'v':'...- ',
+			'w':'.-- ',
+			'x':'-..- ',
+			'y':'-.-- ',
+			'z':'--.. ',
+			'1':'.---- ',
+			'2':'..--- ',
+			'3':'...-- ',
+			'4':'....- ',
+			'5':'..... ',
+			'6':'-.... ',
+			'7':'--... ',
+			'8':'---.. ',
+			'9':'----. ',
+			'0':'----- ',
+			'.':'.----- ',
+			',':'-..... ',
+			'_':'----.- ',
+			'|':'....-. ',
+			'?':'-.---- ',
+			'!':'.-.... ',
+			'-':'.---. ',
+			'$':'..---- ',
+			'%':'...-.- ',
+			'@':'---..- ',
+			'`':'--.--- ',
+			'^':'-...-- ',
+			'~':'---.-- ',
+			'#':'..---. ',
+			'&':'.---.. ',
+			'+':'-...- ',
+		}
+		var alpha = []
 		function cleanUp() {
 			document.getElementById('headerMorse').setAttribute('style', 'display:none;');
 			document.getElementById('headerMorse2').setAttribute('style', 'display:none;');
@@ -407,10 +567,27 @@
 		function selecttm() {
 			document.getElementById('ops1').setAttribute('id', 'ops1out');
 			setTimeout(document.getElementById('ops1out').setAttribute('style', 'display:none;'), 6000);
+			document.getElementById('opstm').setAttribute('id', 'opstmOpen');
 		}
 		function selectmt() {
 			document.getElementById('ops1').setAttribute('id', 'ops1out');
 			setTimeout(document.getElementById('ops1out').setAttribute('style', 'display:none;'), 6000);
+		}
+		function textToMorse() {
+			var text = document.getElementById('input1').value;
+			text = text.toLowerCase();
+			var n = text.length;
+			var z = 0;
+			var newMorse;
+			while (z <= n) {
+				var x = text[z];
+				for (var i = 0; i <= tmDir.length; i+=1) {
+					if (x == tmDir[i]) {
+						newMorse = newMorse + tmDir[i];
+					}
+				}
+				z += 1;
+			}
 		}
 	</script>
 </head>
@@ -423,19 +600,26 @@
 		<h1 id="headerMorse">__  _ _ _  .__.  ...  .</h1>
 		<br>
 		<h1 id="headerMorse2">._._._  ..  _ _ _</h1>
-		<div class="row" id="ops1">
-			<div class="col-sm-4 ops1set1" onclick="selectWhat()">
-				<img src="resources/interstellar.png" class="panelpic">
-				<h1 class="lvl2Head">What is morse code?</h1>
+		<div class="container-fluid">
+			<div class="row" id="ops1">
+				<div class="col-lg-4 col-md-12 ops1set1" onclick="selectWhat()">
+					<img src="resources/interstellar.png" class="panelpic">
+					<h1 class="lvl2Head">What is morse code?</h1>
+				</div>
+				<div class="col-lg-4 col-md-12 ops1set1" onclick="selecttm()">
+					<img src="resources/linetext.png" class="panelpic">
+					<h1 class="lvl2Head">Convert text to morse code.</h1>
+				</div>
+				<div class="col-lg-4 col-md-12 ops1set1" onclick="selectmt()">
+					<img src="resources/morse.jpg" class="panelpic">
+					<h1 class="lvl2Head">Convert morse code to text.</h1>
+				</div>
 			</div>
-			<div class="col-sm-4 ops1set1" onclick="selecttm()">
-				<img src="resources/linetext.png" class="panelpic">
-				<h1 class="lvl2Head">Convert text to morse code.</h1>
-			</div>
-			<div class="col-sm-4 ops1set1" onclick="selectmt()">
-				<img src="resources/morse.jpg" class="panelpic">
-				<h1 class="lvl2Head">Convert morse code to text.</h1>
-			</div>
+		</div>
+		<div id="opstm">
+			<input type="text" id="input1">
+			<br>
+			<button id="tmbtn" onclick="textToMorse()">Convert to morse</button>
 		</div>
 		<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#underDev" id="togBtn">Show info</button>
 		<div id="underDev" class="collapse">
